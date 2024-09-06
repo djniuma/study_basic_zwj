@@ -1,6 +1,5 @@
 package com.basic.message;
 
-import com.basic.service.DynamicService;
 import com.basic.util.JedisUtil;
 import com.basic.util.JsonUtils;
 import org.slf4j.Logger;
@@ -40,19 +39,20 @@ public class MessageConsumer {
                 String message = jedisUtil.rpop(MessageContant.ASYNC_LIST);
                 logger.info("开始消费消息:{}",message);
                 try {
-                    MessageDTO messageDTO = JsonUtils.jsonToPojo(message, MessageDTO.class);
-                    if (ObjectUtils.isEmpty(messageDTO)) {
+                    AsyncMessageDTO asyncMessageDTO = JsonUtils.jsonToPojo(message, AsyncMessageDTO.class);
+                    if (ObjectUtils.isEmpty(asyncMessageDTO)) {
                         continue;
                     }
-                    String type = messageDTO.getType();
+                    String type = asyncMessageDTO.getType();
                     messageManages.stream()
                             .filter(item -> item.getMessageType().equals(type))
                             .findFirst()
                             .get()
-                            .dealMessage(messageDTO);
+                            .dealMessage(asyncMessageDTO);
                 } catch (Exception e){
-                    logger.info("消费处理发生异常:{}",message);
-                    e.printStackTrace();
+                    // 通过日志打印异常信息，比栈打印消耗资源更少，性能更好
+                    logger.info("消费处理发生异常:{}, 异常信息: {}", message, JsonUtils.objectToJson(e));
+//                    e.printStackTrace();
                 }
             }
         }

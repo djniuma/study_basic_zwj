@@ -13,7 +13,7 @@ import com.basic.enums.EntityTypeEnum;
 import com.basic.exception.DynamicException;
 import com.basic.local.HostHolder;
 import com.basic.mapper.DynamicMapper;
-import com.basic.message.MessageDTO;
+import com.basic.message.AsyncMessageDTO;
 import com.basic.message.MessageProducer;
 import com.basic.message.MessageTypeEnum;
 import com.basic.param.CommentParam;
@@ -197,14 +197,14 @@ public class DynamicService {
          *
          */
 
-        MessageDTO messageDTO = new MessageDTO();
-        messageDTO.setId(CommonUtil.createUUID());
-        messageDTO.setUserId(userID);
-        messageDTO.setType(MessageTypeEnum.COMMENT_MESSAGE.getType());
-        messageDTO.setCreateDate(new Date());
-        messageDTO.setMessage(JsonUtils.objectToJson(commentDTO));
-        logger.info("评论成功，产生异步消息需要处理，消息:{}", JsonUtils.objectToJson(messageDTO));
-        messageProducer.produceMessage(JsonUtils.objectToJson(messageDTO));
+        AsyncMessageDTO asyncMessageDTO = new AsyncMessageDTO();
+        asyncMessageDTO.setId(CommonUtil.createUUID());
+        asyncMessageDTO.setUserId(userID);
+        asyncMessageDTO.setType(MessageTypeEnum.COMMENT_MESSAGE.getType());
+        asyncMessageDTO.setCreateDate(new Date());
+        asyncMessageDTO.setMessage(JsonUtils.objectToJson(commentDTO));
+        logger.info("评论成功，产生异步消息需要处理，消息:{}", JsonUtils.objectToJson(asyncMessageDTO));
+        messageProducer.produceMessage(JsonUtils.objectToJson(asyncMessageDTO));
 
         return HttpResult.ok();
     }

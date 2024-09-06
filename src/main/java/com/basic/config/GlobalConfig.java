@@ -16,7 +16,8 @@ public class GlobalConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/token/logout")
-                .addPathPatterns("/dynamic/*");
+                .addPathPatterns("/dynamic/*")
+                .addPathPatterns("/dynamic/*/*");
 
         WebMvcConfigurer.super.addInterceptors(registry);
     }

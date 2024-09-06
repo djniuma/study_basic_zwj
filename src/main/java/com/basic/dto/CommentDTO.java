@@ -19,6 +19,10 @@ public class CommentDTO {
 
     private Date createDate;
 
+    private String dynamicId;
+
+    private Integer status;
+
     public String getId() {
         return id;
     }
@@ -65,5 +69,21 @@ public class CommentDTO {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getDynamicId() {
+        return dynamicId;
+    }
+
+    public void setDynamicId(String dynamicId) {
+        this.dynamicId = dynamicId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
