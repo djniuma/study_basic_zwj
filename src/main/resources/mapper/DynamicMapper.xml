@@ -31,7 +31,8 @@
     <update id="updateDynamic">
         update
         <include refid="table"/>
-        set (#{id}, #{title}, #{content}, #{imgArray}, #{userId}, #{commentCount}, #{status}, #{type}, #{createdDate}, #{updateDate}, #{deleteDate}, #{extendContent})
+        set (id = #{id}, title = #{title}, content = #{content}, img_array = #{imgArray}, user_id = #{userId}, comment_count = #{commentCount}, status = #{status}, type = #{type}, created_date = #{createdDate}, update_date = #{updateDate}, delete_date = #{deleteDate}, extend_content = #{extendContent})
+        where id = #{id}
     </update>
 
     <select id="queryDynamicCount" resultType="java.lang.Integer">

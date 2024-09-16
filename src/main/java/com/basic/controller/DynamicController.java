@@ -51,4 +51,11 @@ public class DynamicController {
      * TODO 8、通过redis搞一个动态热度的排行榜，热度的规则：点赞的权重 + 评论的权重 + 收藏的权重
      * TODO 9、给用户搞一个积分，做签到，积分兑换商品
      */
+
+    @PostMapping("/comment/page")
+    public HttpResult queryCommentPage() {
+
+        return null;
+    }
+
 }
