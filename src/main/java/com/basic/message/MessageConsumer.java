@@ -54,6 +54,7 @@ public class MessageConsumer {
                     logger.info("消费处理发生异常:{}, 异常信息: {}", message, JsonUtils.objectToJson(e));
 //                    e.printStackTrace();
                 }
+                System.out.println("消费消息: " + message);
             }
         }
     }

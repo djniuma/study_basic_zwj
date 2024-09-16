@@ -3,19 +3,19 @@ package com.basic.service;
 import com.basic.common.HttpResult;
 import com.basic.contant.DynamicContant;
 
-import com.basic.dto.CommentDTO;
-import com.basic.dto.DynamicDTO;
-import com.basic.dto.DynamicPageDTO;
-import com.basic.dto.VoteDTO;
+import com.basic.dto.*;
 import com.basic.enums.DynamicStatusEnum;
 import com.basic.enums.DynamicTypeEnum;
 import com.basic.enums.EntityTypeEnum;
 import com.basic.exception.DynamicException;
 import com.basic.local.HostHolder;
+import com.basic.mapper.CommentMapper;
 import com.basic.mapper.DynamicMapper;
+import com.basic.mapper.InformationMapper;
 import com.basic.message.AsyncMessageDTO;
 import com.basic.message.MessageProducer;
 import com.basic.message.MessageTypeEnum;
+import com.basic.message.dto.CommentMessageDTO;
 import com.basic.param.CommentParam;
 import com.basic.param.PublishDynamicParam;
 import com.basic.param.QueryDynamicPageParam;
@@ -57,6 +57,12 @@ public class DynamicService {
 
     @Autowired
     private MessageProducer messageProducer;
+
+    @Autowired
+    private CommentMapper commentMapper;
+
+    @Autowired
+    private InformationMapper informationMapper;
 
 
     public HttpResult publishDynamic(PublishDynamicParam param) {
@@ -179,6 +185,20 @@ public class DynamicService {
         /**
          * TODO 验证entityID所属的实体是否存在
          */
+        if(EntityTypeEnum.DYNAMIC.getType().equals(entityType)) {
+            if(!dynamicMapper.queryDynamicIDById(entityId)) {
+                logger.info("开始评论, 评论实体为空, 请求参数:{}", JsonUtils.objectToJson(param));
+                return HttpResult.fail();
+            }
+        }
+
+        if(EntityTypeEnum.COMMENT.getType().equals(entityType)) {
+            CommentDTO commentDTO = commentMapper.queryCommentDTOById(entityId);
+            if (ObjectUtils.isEmpty(commentDTO)) {
+                logger.info("开始评论, 评论实体为空, 请求参数:{}", JsonUtils.objectToJson(param));
+                return HttpResult.fail();
+            }
+        }
 
         String content = param.getContent();
         if(StringUtils.isEmpty(content)) {
@@ -187,22 +207,26 @@ public class DynamicService {
 
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(CommonUtil.createUUID());
-        commentDTO.setEntity_type(entityType);
-        commentDTO.setEntity_id(entityId);
+        commentDTO.setEntityType(entityType);
+        commentDTO.setEntityId(entityId);
         commentDTO.setContent(content);
-        commentDTO.setCreateDate(new Date());
+        commentDTO.setCreatedDate(new Date());
         commentDTO.setUserId(userID);
         /**
          * TODO 写一下comment相关的数据库表和mapper接口及实现的xml文件
-         *
          */
+        commentMapper.addCommentDTO(commentDTO);
 
         AsyncMessageDTO asyncMessageDTO = new AsyncMessageDTO();
         asyncMessageDTO.setId(CommonUtil.createUUID());
         asyncMessageDTO.setUserId(userID);
         asyncMessageDTO.setType(MessageTypeEnum.COMMENT_MESSAGE.getType());
         asyncMessageDTO.setCreateDate(new Date());
-        asyncMessageDTO.setMessage(JsonUtils.objectToJson(commentDTO));
+
+        CommentMessageDTO commentMessageDTO = new CommentMessageDTO();
+        commentMessageDTO.setId(commentDTO.getId());
+
+        asyncMessageDTO.setMessage(JsonUtils.objectToJson(commentMessageDTO));
         logger.info("评论成功，产生异步消息需要处理，消息:{}", JsonUtils.objectToJson(asyncMessageDTO));
         messageProducer.produceMessage(JsonUtils.objectToJson(asyncMessageDTO));
 
@@ -257,6 +281,20 @@ public class DynamicService {
          * TODO 将信息更新到记录中
          * TODO 作业: 1.完成投票的更新sql; 2.完成消息发送, 被投票的人接受到有人参与投票的消息
          */
+        dynamicDTO.setExtendContent(JsonUtils.objectToJson(voteDTO));
+        dynamicDTO.setUpdateDate(new Date());
+        dynamicMapper.updateDynamic(dynamicDTO);
+
+        InformationDTO informationDTO = new InformationDTO();
+        informationDTO.setId(CommonUtil.createUUID());
+        informationDTO.setSendUserId(userID);
+        informationDTO.setTakeUserId(dynamicDTO.getUserId());
+        informationDTO.setEntityId(dynamicDTO.getId());
+        informationDTO.setEntityType(EntityTypeEnum.VOTE.getType());
+        informationDTO.setContent("已投票成功");
+        informationDTO.setSendDate(new Date());
+
+        informationMapper.addInformationDTO(informationDTO);
 
         return HttpResult.ok();
     }

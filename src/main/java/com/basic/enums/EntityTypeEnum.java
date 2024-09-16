@@ -9,6 +9,7 @@ public enum EntityTypeEnum {
 
     COMMENT(2, "评论", "COMMENT"),
 
+    VOTE(3, "投票", "VOTE")
     ;
 
     private Integer type;

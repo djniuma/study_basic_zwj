@@ -9,6 +9,9 @@ public class CommentParam {
      */
     private Integer entity_type;
 
+    /**
+     * 评论的目标id，既帖子id
+     */
     private String entity_id;
 
     private String content;

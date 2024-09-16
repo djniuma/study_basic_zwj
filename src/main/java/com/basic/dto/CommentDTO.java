@@ -11,17 +11,19 @@ public class CommentDTO {
     /**
      * {@link com.basic.enums.EntityTypeEnum}
      */
-    private Integer entity_type;
+    private Integer entityType;
 
-    private String entity_id;
+    private String entityId;
 
     private String content;
 
-    private Date createDate;
+    private Date createdDate;
 
     private String dynamicId;
 
     private Integer status;
+
+    private Date deleteDate;
 
     public String getId() {
         return id;
@@ -39,20 +41,20 @@ public class CommentDTO {
         this.userId = userId;
     }
 
-    public Integer getEntity_type() {
-        return entity_type;
+    public Integer getEntityType() {
+        return entityType;
     }
 
-    public void setEntity_type(Integer entity_type) {
-        this.entity_type = entity_type;
+    public void setEntityType(Integer entityType) {
+        this.entityType = entityType;
     }
 
-    public String getEntity_id() {
-        return entity_id;
+    public String getEntityId() {
+        return entityId;
     }
 
-    public void setEntity_id(String entity_id) {
-        this.entity_id = entity_id;
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
     }
 
     public String getContent() {
@@ -63,12 +65,12 @@ public class CommentDTO {
         this.content = content;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createDate) {
+        this.createdDate = createDate;
     }
 
     public String getDynamicId() {
@@ -85,5 +87,13 @@ public class CommentDTO {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getDeleteDate() {
+        return deleteDate;
+    }
+
+    public void setDeleteDate(Date deleteDate) {
+        this.deleteDate = deleteDate;
     }
 }

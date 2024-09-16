@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.mapper.InformationMapper">
+
+
+    <sql id="table">message</sql>
+
+    <sql id="basic_column">id, send_user_id, take_user_id, entity_id, entity_type, content, send_date</sql>
+
+    <insert id="addInformationDTO">
+        insert into
+            <include refid="table"/>
+            (<include refid="basic_column"/>)
+        values (#{id}, #{sendUserId}, #{takeUserId}, #{entityId}, #{entityType}, #{content}, #{sendDate})
+    </insert>
+
+<!--    <select id="queryCommentDTOById" resultType="com.basic.dto.CommentDTO">-->
+<!--        select * from-->
+<!--        <include refid="table"/>-->
+<!--        where id = #{id}-->
+<!--    </select>-->
+
+
+</mapper>

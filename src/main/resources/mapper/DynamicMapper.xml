@@ -28,6 +28,12 @@
         values (#{id}, #{title}, #{content}, #{imgArray}, #{userId}, #{commentCount}, #{status}, #{type}, #{createdDate}, #{updateDate}, #{deleteDate}, #{extendContent})
     </insert>
 
+    <update id="updateDynamic">
+        update
+        <include refid="table"/>
+        set (#{id}, #{title}, #{content}, #{imgArray}, #{userId}, #{commentCount}, #{status}, #{type}, #{createdDate}, #{updateDate}, #{deleteDate}, #{extendContent})
+    </update>
+
     <select id="queryDynamicCount" resultType="java.lang.Integer">
         select count(*) from <include refid="table"/> where status = 1
     </select>
@@ -56,6 +62,10 @@
         select * from
         <include refid="table"/>
         where id = #{id} and status = 1
+    </select>
+
+    <select id="queryDynamicIDById" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT 1 FROM <include refid="table"/> WHERE id = #{id})
     </select>
 
 

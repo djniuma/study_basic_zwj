@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.mapper.CommentMapper">
+<!--    <resultMap id="base_result" type="com.basic.dto.DynamicDTO">-->
+<!--        <id column="id" property="id" jdbcType="VARCHAR" />-->
+<!--        <result column="title" property="title" jdbcType="VARCHAR" />-->
+<!--        <result column="content" property="content" jdbcType="VARCHAR" />-->
+<!--        <result column="img_array" property="imgArray" jdbcType="VARCHAR" />-->
+<!--        <result column="user_id" property="userId" jdbcType="VARCHAR" />-->
+<!--        <result column="comment_count" property="commentCount" jdbcType="INTEGER" />-->
+<!--        <result column="status" property="status" jdbcType="INTEGER" />-->
+<!--        <result column="type" property="type" jdbcType="INTEGER" />-->
+<!--        <result column="created_date" property="createdDate" jdbcType="DATE" />-->
+<!--        <result column="update_date" property="updateDate" jdbcType="DATE" />-->
+<!--        <result column="delete_date" property="deleteDate" jdbcType="DATE" />-->
+<!--        <result column="extend_content" property="extendContent" jdbcType="VARCHAR" />-->
+
+<!--    </resultMap>-->
+
+    <sql id="table">comment</sql>
+
+    <sql id="basic_column">id, user_id, entity_id, entity_type, content, created_date, delete_date</sql>
+
+    <insert id="addCommentDTO">
+        insert into
+            <include refid="table"/>
+            (<include refid="basic_column"/>)
+        values (#{id}, #{userId}, #{entityId}, #{entityType}, #{content}, #{createdDate}, #{deleteDate})
+    </insert>
+
+    <select id="queryCommentDTOById" resultType="com.basic.dto.CommentDTO">
+        select * from
+        <include refid="table"/>
+        where id = #{id}
+    </select>
+
+    <!--    <select id="queryDynamicCount" resultType="java.lang.Integer">-->
+<!--        select count(*) from <include refid="table"/> where status = 1-->
+<!--    </select>-->
+
+<!--    <resultMap id="page_result" type="com.basic.dto.DynamicPageDTO">-->
+<!--        <id column="id" property="id" jdbcType="VARCHAR" />-->
+<!--        <result column="title" property="title" jdbcType="VARCHAR" />-->
+<!--        <result column="content" property="content" jdbcType="VARCHAR" />-->
+<!--        <result column="img_array" property="imgs" jdbcType="VARCHAR" />-->
+<!--        <result column="username" property="username" jdbcType="VARCHAR" />-->
+<!--        <result column="comment_count" property="commentCount" jdbcType="INTEGER" />-->
+<!--        <result column="status" property="status" jdbcType="INTEGER" />-->
+<!--        <result column="type" property="type" jdbcType="INTEGER" />-->
+<!--        <result column="created_date" property="createdDate" jdbcType="DATE" />-->
+<!--        <result column="update_date" property="updateDate" jdbcType="DATE" />-->
+<!--        <result column="delete_date" property="deleteDate" jdbcType="DATE" />-->
+<!--        <result column="extend_content" property="extendContent" jdbcType="VARCHAR" />-->
+<!--    </resultMap>-->
+
+<!--    <select id="queryDynamicPage" resultMap="page_result">-->
+<!--        select *, (SELECT username FROM USER WHERE user.id=dynamic.user_id) AS username FROM DYNAMIC WHERE status = 1-->
+<!--        limit #{start}, #{pageSize}-->
+<!--    </select>-->
+
+<!--    <select id="queryDynamicById" resultType="com.basic.dto.DynamicDTO">-->
+<!--        select * from-->
+<!--        <include refid="table"/>-->
+<!--        where id = #{id} and status = 1-->
+<!--    </select>-->
+
+
+    <!--    <select id="queryUserDTO" resultMap="base_result">-->
+<!--        select * from-->
+<!--            <include refid="table"/>-->
+<!--            where username = #{username}-->
+<!--    </select>-->
+
+<!--    <select id="queryUserDTOById" resultMap="base_result">-->
+<!--        select * from-->
+<!--        <include refid="table"/>-->
+<!--        where id = #{userId}-->
+<!--    </select>-->
+
+    <!--    <select id="queryTestContentById" resultType="java.lang.String">-->
+<!--            select content from-->
+<!--            <include refid="table"/>-->
+<!--            where id = #{id}-->
+<!--    </select>-->
+
+
+</mapper>
